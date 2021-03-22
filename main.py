@@ -45,11 +45,13 @@ def get_decision():
     while True:
         allowed_quantity = [1, 2, 3, 4]
         quantity = int(input("\nChoose an option:\n{}. Generate new coordinates for a {}\n"
-                             .format(colors["yellow_txt"] + "1" + colors["white_txt"], colors["blue_txt_black_bgr"] + "Pawn" + colors["white_txt"])
+                             .format(colors["yellow_txt"] + "1" + colors["white_txt"],
+                                     colors["blue_txt_black_bgr"] + "Pawn" + colors["white_txt"])
                              + "{}. Delete a chosen {}"
-                             .format(colors["yellow_txt"] + "2" + colors["white_txt"], colors["red_txt_black_bgr"] + "Hetman" + colors["white_txt"])
-                             + "\n{}. Show actual chessboard".format(colors["yellow_txt"] + "3" + colors["white_txt"],)
-                             + "\n{}. Exit a program\n".format(colors["yellow_txt"] + "4" + colors["white_txt"],)))
+                             .format(colors["yellow_txt"] + "2" + colors["white_txt"],
+                                     colors["red_txt_black_bgr"] + "Hetman" + colors["white_txt"])
+                             + "\n{}. Show actual chessboard".format(colors["yellow_txt"] + "3" + colors["white_txt"], )
+                             + "\n{}. Exit a program\n".format(colors["yellow_txt"] + "4" + colors["white_txt"], )))
         if quantity in allowed_quantity:
             return quantity
 
@@ -59,12 +61,6 @@ def delete_chosen_hetman():
     if not allowed_quantity:
         print("No hetmans to be deleted!")
     else:
-        for options in range(len(allowed_quantity)):
-            print("ID:{} x:{}  y:{}".format(colors["yellow_txt"]
-                                            + str(options)
-                                            + colors["white_txt"],
-                                            string.ascii_uppercase[enemy_hetmans[options].cords.y],
-                                            enemy_hetmans[options].cords.x + 1))
         do = True
         while do:
             quantity = int(input("Which {} would you like to delete?\n"
@@ -133,7 +129,12 @@ def which_hetmans_can_beat_pawn(pawns_cords):
     pawn_x = pawns_cords[0].cords.x
     pawn_y = pawns_cords[0].cords.y
     # print("P x:{} y:{}".format(pawn_x+1, string.ascii_uppercase[pawn_y]))
-    print(colors['yellow_txt'] + "\nThese Hetmans can beat a pawn:" + colors["white_txt"])
+    print(colors['yellow_txt'] +
+          "\n{}Red ID{} - can beat a {}Pawn{}\n{}Yellow ID{} - can't beat a {}Pawn{}\n".format
+          (colors["red_txt_black_bgr"], colors["white_txt"],colors["blue_txt_black_bgr"],
+           colors["white_txt"], colors["yellow_txt"], colors["white_txt"],
+           colors["blue_txt_black_bgr"], colors["white_txt"])
+          + colors["white_txt"])
     # delete pawn
     if type(pawns_cords[0]) is Pawns:
         pawns_cords.pop(0)
@@ -142,12 +143,20 @@ def which_hetmans_can_beat_pawn(pawns_cords):
         # print("type:{}  x:{}  y:{}".format(type(pion), pion.cords.x+1, string.ascii_uppercase[pion.cords.y]))
         if (pion.cords.x == pawn_x or pion.cords.y == pawn_y or can_beat_diagonally(Cords(pawn_x, pawn_y), pion)) \
                 and (type(pion) is Hetman):
+            print("ID:{} x:{}  y:{}".format(colors["red_txt_black_bgr"]
+                                            + str(len(hetmans_that_can_beat))
+                                            + colors["white_txt"],
+                                            string.ascii_uppercase[pion.cords.y],
+                                            pion.cords.x + 1))
+            hetmans_that_can_beat.append(pion)
+        elif type(pion) is Hetman:
             print("ID:{} x:{}  y:{}".format(colors["yellow_txt"]
                                             + str(len(hetmans_that_can_beat))
                                             + colors["white_txt"],
                                             string.ascii_uppercase[pion.cords.y],
                                             pion.cords.x + 1))
             hetmans_that_can_beat.append(pion)
+
     return hetmans_that_can_beat
 
 
